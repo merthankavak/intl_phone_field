@@ -80,6 +80,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: widget.style?.backgroundColor,
       padding: widget.style?.padding ?? const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
