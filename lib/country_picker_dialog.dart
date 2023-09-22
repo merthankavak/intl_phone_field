@@ -79,69 +79,71 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.style?.backgroundColor,
-      padding: widget.style?.padding ?? const EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: widget.style?.searchFieldPadding ?? const EdgeInsets.all(0),
-            child: TextField(
-              cursorColor: widget.style?.searchFieldCursorColor,
-              decoration: widget.style?.searchFieldInputDecoration ??
-                  InputDecoration(
-                    suffixIcon: const Icon(Icons.search),
-                    labelText: widget.searchText,
-                  ),
-              onChanged: (value) {
-                _filteredCountries = widget.countryList.stringSearch(value)
-                  ..sort(
-                    (a, b) => a.localizedName(widget.languageCode).compareTo(b.localizedName(widget.languageCode)),
-                  );
-                if (mounted) setState(() {});
-              },
-            ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _filteredCountries.length,
-              itemBuilder: (ctx, index) => Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: kIsWeb
-                        ? Image.asset(
-                            'assets/flags/${_filteredCountries[index].code.toLowerCase()}.png',
-                            package: 'intl_phone_field',
-                            width: 32,
-                          )
-                        : Text(
-                            _filteredCountries[index].flag,
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                    contentPadding: widget.style?.listTilePadding,
-                    title: Text(
-                      _filteredCountries[index].localizedName(widget.languageCode),
-                      style: widget.style?.countryNameStyle ?? const TextStyle(fontWeight: FontWeight.w700),
+    return Builder(builder: (context) {
+      return Container(
+        color: widget.style?.backgroundColor,
+        padding: widget.style?.padding ?? const EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: widget.style?.searchFieldPadding ?? const EdgeInsets.all(0),
+              child: TextField(
+                cursorColor: widget.style?.searchFieldCursorColor,
+                decoration: widget.style?.searchFieldInputDecoration ??
+                    InputDecoration(
+                      suffixIcon: const Icon(Icons.search),
+                      labelText: widget.searchText,
                     ),
-                    trailing: Text(
-                      '+${_filteredCountries[index].dialCode}',
-                      style: widget.style?.countryCodeStyle ?? const TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    onTap: () {
-                      _selectedCountry = _filteredCountries[index];
-                      widget.onCountryChanged(_selectedCountry);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  widget.style?.listTileDivider ?? const Divider(thickness: 1),
-                ],
+                onChanged: (value) {
+                  _filteredCountries = widget.countryList.stringSearch(value)
+                    ..sort(
+                      (a, b) => a.localizedName(widget.languageCode).compareTo(b.localizedName(widget.languageCode)),
+                    );
+                  if (mounted) setState(() {});
+                },
               ),
             ),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _filteredCountries.length,
+                itemBuilder: (ctx, index) => Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: kIsWeb
+                          ? Image.asset(
+                              'assets/flags/${_filteredCountries[index].code.toLowerCase()}.png',
+                              package: 'intl_phone_field',
+                              width: 32,
+                            )
+                          : Text(
+                              _filteredCountries[index].flag,
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                      contentPadding: widget.style?.listTilePadding,
+                      title: Text(
+                        _filteredCountries[index].localizedName(widget.languageCode),
+                        style: widget.style?.countryNameStyle ?? const TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      trailing: Text(
+                        '+${_filteredCountries[index].dialCode}',
+                        style: widget.style?.countryCodeStyle ?? const TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      onTap: () {
+                        _selectedCountry = _filteredCountries[index];
+                        widget.onCountryChanged(_selectedCountry);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    widget.style?.listTileDivider ?? const Divider(thickness: 1),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
