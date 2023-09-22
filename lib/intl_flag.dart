@@ -27,9 +27,6 @@ class IntlFlag extends StatefulWidget {
   final List<Country>? countries;
   final TextStyle? style;
 
-  /// Won't work if [enabled] is set to `false`.
-  final bool showDropdownIcon;
-
   final BoxDecoration dropdownDecoration;
 
   /// The text that describes the search input field.
@@ -37,14 +34,6 @@ class IntlFlag extends StatefulWidget {
   /// When the input field is empty and unfocused, the label is displayed on top of the input field (i.e., at the same location on the screen where text may be entered in the input field).
   /// When the input field receives focus (or if the field is non-empty), the label moves above (i.e., vertically adjacent to) the input field.
   final String searchText;
-
-  /// Position of an icon [leading, trailing]
-  final IconPosition dropdownIconPosition;
-
-  /// Icon of the drop down button.
-  ///
-  /// Default is [Icon(Icons.arrow_drop_down)]
-  final Icon dropdownIcon;
 
   /// Whether to show or hide country flag.
   ///
@@ -79,12 +68,9 @@ class IntlFlag extends StatefulWidget {
     this.style,
     this.countries,
     this.onCountryChanged,
-    this.showDropdownIcon = true,
     this.dropdownDecoration = const BoxDecoration(),
     this.enabled = true,
     @Deprecated('Use searchFieldInputDecoration of PickerDialogStyle instead') this.searchText = 'Search country',
-    this.dropdownIconPosition = IconPosition.leading,
-    this.dropdownIcon = const Icon(Icons.arrow_drop_down),
     this.showCountryFlag = true,
     this.flagsButtonPadding = EdgeInsets.zero,
     this.pickerDialogStyle,
@@ -155,12 +141,6 @@ class _IntlFlagState extends State<IntlFlag> {
                 const SizedBox(
                   width: 4,
                 ),
-                if (widget.enabled &&
-                    widget.showDropdownIcon &&
-                    widget.dropdownIconPosition == IconPosition.leading) ...[
-                  widget.dropdownIcon,
-                  const SizedBox(width: 4),
-                ],
                 if (widget.showCountryFlag) ...[
                   kIsWeb
                       ? Image.asset(
@@ -174,13 +154,6 @@ class _IntlFlagState extends State<IntlFlag> {
                         ),
                   const SizedBox(width: 8),
                 ],
-                if (widget.enabled &&
-                    widget.showDropdownIcon &&
-                    widget.dropdownIconPosition == IconPosition.trailing) ...[
-                  const SizedBox(width: 4),
-                  widget.dropdownIcon,
-                ],
-                const SizedBox(width: 8),
               ],
             ),
           ),

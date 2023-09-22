@@ -46,6 +46,7 @@ class CountryPickerDialog extends StatefulWidget {
   final List<Country> filteredCountries;
   final PickerDialogStyle? style;
   final String languageCode;
+  final bool? showDialCodes;
 
   const CountryPickerDialog({
     Key? key,
@@ -56,6 +57,7 @@ class CountryPickerDialog extends StatefulWidget {
     required this.selectedCountry,
     required this.filteredCountries,
     this.style,
+    this.showDialCodes = true,
   }) : super(key: key);
 
   @override
@@ -65,9 +67,11 @@ class CountryPickerDialog extends StatefulWidget {
 class _CountryPickerDialogState extends State<CountryPickerDialog> {
   late List<Country> _filteredCountries;
   late Country _selectedCountry;
+  late bool _showDialCodes;
 
   @override
   void initState() {
+    _showDialCodes = widget.showDialCodes ?? true;
     _selectedCountry = widget.selectedCountry;
     _filteredCountries = widget.filteredCountries.toList()
       ..sort(
@@ -126,10 +130,12 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                         _filteredCountries[index].localizedName(widget.languageCode),
                         style: widget.style?.countryNameStyle ?? const TextStyle(fontWeight: FontWeight.w700),
                       ),
-                      trailing: Text(
-                        '+${_filteredCountries[index].dialCode}',
-                        style: widget.style?.countryCodeStyle ?? const TextStyle(fontWeight: FontWeight.w700),
-                      ),
+                      trailing: _showDialCodes
+                          ? Text(
+                              '+${_filteredCountries[index].dialCode}',
+                              style: widget.style?.countryCodeStyle ?? const TextStyle(fontWeight: FontWeight.w700),
+                            )
+                          : null,
                       onTap: () {
                         _selectedCountry = _filteredCountries[index];
                         widget.onCountryChanged(_selectedCountry);
