@@ -271,7 +271,8 @@ class IntlPhoneField extends StatefulWidget {
     this.inputFormatters,
     this.enabled = true,
     this.keyboardAppearance,
-    @Deprecated('Use searchFieldInputDecoration of PickerDialogStyle instead') this.searchText = 'Search country',
+    @Deprecated('Use searchFieldInputDecoration of PickerDialogStyle instead')
+    this.searchText = 'Search country',
     this.dropdownIconPosition = IconPosition.leading,
     this.dropdownIcon = const Icon(Icons.arrow_drop_down),
     this.autofocus = false,
@@ -311,13 +312,15 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
     if (widget.initialCountryCode == null && number.startsWith('+')) {
       number = number.substring(1);
       // parse initial value
-      _selectedCountry = countries.firstWhere((country) => number.startsWith(country.fullCountryCode),
+      _selectedCountry = countries.firstWhere(
+          (country) => number.startsWith(country.fullCountryCode),
           orElse: () => _countryList.first);
 
       // remove country code from the initial number value
       number = number.replaceFirst(RegExp("^${_selectedCountry.fullCountryCode}"), "");
     } else {
-      _selectedCountry = _countryList.firstWhere((item) => item.code == (widget.initialCountryCode ?? 'US'),
+      _selectedCountry = _countryList.firstWhere(
+          (item) => item.code == (widget.initialCountryCode ?? 'US'),
           orElse: () => _countryList.first);
 
       // remove country code from the initial number value
@@ -328,28 +331,26 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
       }
     }
 
-    if (widget.autovalidateMode == AutovalidateMode.always) {
-      final initialPhoneNumber = PhoneNumber(
-        countryISOCode: _selectedCountry.code,
-        countryCode: '+${_selectedCountry.dialCode}',
-        number: widget.initialValue ?? '',
-      );
+    final initialPhoneNumber = PhoneNumber(
+      countryISOCode: _selectedCountry.code,
+      countryCode: '+${_selectedCountry.dialCode}',
+      number: widget.initialValue ?? '',
+    );
 
-      final value = widget.validator?.call(initialPhoneNumber);
+    final value = widget.validator?.call(initialPhoneNumber);
 
-      if (value is String) {
-        validatorMessage = value;
-      } else {
-        (value as Future).then((msg) {
-          validatorMessage = msg;
-        });
-      }
+    if (value is String) {
+      validatorMessage = value;
+    } else {
+      (value as Future).then((msg) {
+        validatorMessage = msg;
+      });
     }
   }
 
   Future<void> _changeCountry() async {
     filteredCountries = _countryList;
-    await showModalBottomSheet(
+    await showDialog(
       context: context,
       useRootNavigator: false,
       builder: (context) => StatefulBuilder(
@@ -419,7 +420,8 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
       validator: (value) {
         if (value == null || !isNumeric(value)) return validatorMessage;
         if (!widget.disableLengthCheck) {
-          return value.length >= _selectedCountry.minLength && value.length <= _selectedCountry.maxLength
+          return value.length >= _selectedCountry.minLength &&
+                  value.length <= _selectedCountry.maxLength
               ? null
               : widget.invalidNumberMessage;
         }
