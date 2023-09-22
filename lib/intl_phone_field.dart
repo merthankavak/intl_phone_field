@@ -350,7 +350,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
 
   Future<void> _changeCountry() async {
     filteredCountries = _countryList;
-    await showDialog(
+    await showModalBottomSheet(
       context: context,
       useRootNavigator: false,
       builder: (context) => StatefulBuilder(
